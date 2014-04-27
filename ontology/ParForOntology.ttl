@@ -1,0 +1,745 @@
+# PARFOR Ontology:
+# 
+# This file provides several layers of ontology useful
+# for forensic analysis. Please read the paper referenced 
+# below for more details.
+#
+# This file is provided in .TTL format. At the time of writing,
+# this represented the best balance of compatability and 
+# readability. 
+# 
+# Objects begin with a capital letter.
+# Predicates do not.
+# 
+# REFERENCE:
+# 
+# If you use this work, please add a reference to :
+# Turnbull, B., Randhawa, S.; Automated event and social network
+# extraction from digital evidence sources with ontological
+# mapping. 
+# 
+# 
+# LICENCE
+# 
+# ParFor is Copyright (C) 2013 Commonwealth of Australia.
+#
+# ParFor is licensed under the GNU General Public License version 3
+# (#GPLv3) with extensions as allowed under clause 7 of GPLv3 to clarify
+# issues of indemnity and liability.
+# 
+# See ../COPYING file for full details.
+#
+#
+#
+# baseURI: http://pax.dsto.defence.gov.au/Forensic/2012-12-10/Base
+
+@prefix base:    <http://pax.dsto.defence.gov.au/ParFor/2012-12-10/base#> .
+@prefix comms:   <http://pax.dsto.defence.gov.au/ParFor/2012-12-10/comms#> .
+@prefix comp:    <http://pax.dsto.defence.gov.au/ParFor/2012-12-10/comp#> .
+@prefix event:   <http://pax.dsto.defence.gov.au/ParFor/2012-12-10/event#> .
+@prefix fs:      <http://pax.dsto.defence.gov.au/ParFor/2012-12-10/fs#> .
+@prefix fsdetail:  <http://pax.dsto.defence.gov.au/ParFor/2012-12-10/fsdetail#> .
+@prefix instance:  <http://pax.dsto.defence.gov.au/ParFor/2012-12-10/instance#> .
+@prefix metadata:  <http://pax.dsto.defence.gov.au/ParFor/2012-12-10/metadata#> .
+@prefix owl:     <http://www.w3.org/2002/07/owl#> .
+@prefix person:  <http://pax.dsto.defence.gov.au/ParFor/2012-12-10/person#> .
+@prefix rdf:     <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix user:    <http://pax.dsto.defence.gov.au/ParFor/2012-12-10/user#> .
+@prefix xsd:     <http://www.w3.org/2001/XMLSchema#> .
+
+
+# base is the prefix from which all others derive. 
+base:hashType
+      rdf:type rdfs:Datatype ;
+      rdfs:comment "hash data type. Use the sub types if possible" ;
+      rdfs:label "hash" ;
+      rdfs:subTypeOf xsd:string .
+
+base:homeDirectory
+      rdf:type rdf:Property ;
+      rdfs:comment "."^^xsd:string ;
+      rdfs:domain user:UserAccount ;
+      rdfs:label "metadata property"^^xsd:string ;
+      rdfs:range fs:Directory .
+
+base:md5HashType
+      rdf:type rdfs:Datatype ;
+      rdfs:comment "md5 hash data type." ;
+      rdfs:label "md5 hash" ;
+      rdfs:subTypeOf xsd:string , base:hashType .
+
+base:metadataProperty
+      rdf:type rdf:Property ;
+      rdfs:comment "metadata property is a type of property directly defined. ."^^xsd:string ;
+      rdfs:label "metadata property"^^xsd:string .
+
+base:mountPoint
+      rdf:type rdf:Property ;
+      rdfs:comment "refers to the case mount point" ;
+      rdfs:label "mount point " .
+
+base:name
+      rdf:type rdf:Property ;
+      rdfs:comment "name. Used everywhere. Used subproperties where possible."^^xsd:string ;
+      rdfs:label "name"^^xsd:string ;
+      rdfs:range xsd:string .
+
+base:ntPasswordHashType
+      rdf:type rdfs:Datatype ;
+      rdfs:comment "NT password hash data type." ;
+      rdfs:label "NT hash" ;
+      rdfs:subTypeOf xsd:string , base:passwordHashType .
+
+base:ntlmPasswordHashType
+      rdf:type rdfs:Datatype ;
+      rdfs:comment "NTLM password hash data type." ;
+      rdfs:label "NTLM hash" ;
+      rdfs:subTypeOf xsd:string , base:passwordHashType .
+
+base:passwordHash
+      rdf:type rdf:Property ;
+      rdfs:comment "User id. Normally a number."^^xsd:string ;
+      rdfs:domain user:UserAccount ;
+      rdfs:label "metadata property"^^xsd:string ;
+      rdfs:range base:passwordHashType .
+
+base:passwordHashType
+      rdf:type rdfs:Datatype ;
+      rdfs:comment "password hash data type. Use subtypes" ;
+      rdfs:label "password hash" ;
+      rdfs:subTypeOf xsd:string , base:hashType .
+
+base:sha256HashType
+      rdf:type rdfs:Datatype ;
+      rdfs:comment "sha256 hash data type." ;
+      rdfs:label "sha256 hash" ;
+      rdfs:subTypeOf xsd:string , base:hashType .
+
+base:userId
+      rdf:type rdf:Property ;
+      rdfs:comment "User id. Normally a number."^^xsd:string ;
+      rdfs:domain user:UserAccount ;
+      rdfs:label "metadata property"^^xsd:string ;
+      rdfs:range xsd:string .
+
+base:username
+      rdf:type rdf:Property ;
+      rdf:subPropertyOf base:name ;
+      rdfs:comment "User name."^^xsd:string ;
+      rdfs:domain user:UserAccount ;
+      rdfs:label "username"^^xsd:string ;
+      rdfs:range xsd:string .
+
+comms:AsyncronouslyCommunicates
+      rdf:type rdf:Class ;
+      rdfs:comment "asyncronous communication verbs here"^^xsd:string ;
+      rdfs:label "asyncronously communicates"^^xsd:string ;
+      rdfs:subClassOf comms:Communicates .
+
+comms:Communicates
+      rdf:type rdf:Class ;
+      rdfs:comment "."^^xsd:string ;
+      rdfs:label ""^^xsd:string ;
+      rdfs:subClassOf event:Verb .
+
+comms:Communication
+      rdf:type rdf:Class ;
+      rdfs:comment "Communications are sub types of event. This refers to the communication itself, rather than the email or oject of communication."^^xsd:string ;
+      rdfs:label ""^^xsd:string ;
+      rdfs:subClassOf event:Event .
+
+comms:Emails
+      rdf:type comms:AsyncronouslyCommunicates ;
+      rdfs:comment "emails verb"^^xsd:string ;
+      rdfs:label "emails"^^xsd:string .
+
+comms:FacebookMessages
+      rdf:type comms:AsyncronouslyCommunicates ;
+      rdfs:comment "facebook message verb"^^xsd:string ;
+      rdfs:label "facebook messages"^^xsd:string .
+
+comms:MicrosoftCommunicatorMessages
+      rdf:type comms:SyncronouslyCommunicates ;
+      rdfs:comment "verb to imply syncronous comms via ms communicator"^^xsd:string ;
+      rdfs:label "sends via microsoft communicator"^^xsd:string .
+
+comms:SyncronouslyCommunicates
+      rdf:type rdf:Class ;
+      rdfs:comment "syncronous communication verbs here"^^xsd:string ;
+      rdfs:label ""^^xsd:string ;
+      rdfs:subClassOf comms:Communicates .
+
+comms:communication_bcc
+      rdf:type rdf:Property ;
+      rdfs:comment "communication bccs"^^xsd:string ;
+      rdfs:domain event:Event ;
+      rdfs:label "theme"^^xsd:string ;
+      rdfs:subPropertyOf event:theme .
+
+comms:communication_cc
+      rdf:type rdf:Property ;
+      rdfs:comment "communication ccs"^^xsd:string ;
+      rdfs:domain event:Event ;
+      rdfs:label "cc"^^xsd:string ;
+      rdfs:subPropertyOf event:theme .
+
+comms:communication_from
+      rdf:type rdf:Property ;
+      rdfs:comment "actor or actors in an event"^^xsd:string ;
+      rdfs:domain comms:Communication ;
+      rdfs:label "actor"^^xsd:string ;
+      rdfs:subPropertyOf event:actor .
+
+comms:communication_to
+      rdf:type rdf:Property ;
+      rdfs:comment "communication is to"^^xsd:string ;
+      rdfs:domain event:Event ;
+      rdfs:label "to"^^xsd:string ;
+      rdfs:subPropertyOf event:theme .
+
+comms:communication_topic
+      rdf:type rdf:Property ;
+      rdfs:comment "topic or subject of communication"^^xsd:string ;
+      rdfs:domain comms:Communication ;
+      rdfs:label "topic"^^xsd:string .
+
+comms:recievingProgram
+      rdf:type rdf:Property ;
+      rdfs:comment "recieving program"^^xsd:string ;
+      rdfs:domain comms:Communication ;
+      rdfs:label "recieving program"^^xsd:string ;
+      rdfs:subPropertyOf event:instrument .
+
+comms:sendingProgram
+      rdf:type rdf:Property ;
+      rdfs:comment "sending program"^^xsd:string ;
+      rdfs:domain comms:Communication ;
+      rdfs:label "sending program"^^xsd:string ;
+      rdfs:subPropertyOf event:instrument .
+
+comp:CloudSoftware
+      rdf:type rdf:Class ;
+      rdfs:comment "Software utilising cloud services"^^xsd:string ;
+      rdfs:label "cloud software"^^xsd:string ;
+      rdfs:subClassOf comp:Software .
+
+comp:Computer
+      rdf:type rdf:Class ;
+      rdfs:comment "Computer object"^^xsd:string ;
+      rdfs:label ""^^xsd:string .
+
+comp:OfficeSoftware
+      rdf:type rdf:Class ;
+      rdfs:comment "Office software"^^xsd:string ;
+      rdfs:label "office software"^^xsd:string ;
+      rdfs:subClassOf comp:Software .
+
+comp:OperatingSystemSoftware
+      rdf:type rdf:Class ;
+      rdfs:comment "Operating system software"^^xsd:string ;
+      rdfs:label "Operating system software"^^xsd:string ;
+      rdfs:subClassOf comp:Software .
+
+comp:Software
+      rdf:type rdf:Class ;
+      rdfs:comment "Software object. Use subclasses if possible"^^xsd:string ;
+      rdfs:label "software"^^xsd:string .
+
+comp:installedOperatingSystem
+      rdf:type rdf:Property ;
+      rdfs:comment "computer object has operating system software. "^^xsd:string ;
+      rdfs:domain comp:Computer ;
+      rdfs:label "operating system"^^xsd:string ;
+      rdfs:range comp:OperatingSystemSoftware .
+
+comp:installedSoftware
+      rdf:type rdf:Property ;
+      rdfs:comment "computer object has installed software. "^^xsd:string ;
+      rdfs:domain comp:Computer ;
+      rdfs:label "installed software"^^xsd:string ;
+      rdfs:range comp:Software .
+
+event:AnomalyEvent
+      rdf:type rdf:Class ;
+      rdfs:comment "."^^xsd:string ;
+      rdfs:label ""^^xsd:string ;
+      rdfs:subClassOf event:Verb .
+
+event:ComputerHibernateOff
+      rdf:type event:ComputerStateChangeVerb ;
+      rdfs:comment "Computer hibernate off."^^xsd:string ;
+      rdfs:label "Computer hibernate off"^^xsd:string .
+
+event:ComputerHibernateOn
+      rdf:type event:ComputerStateChangeVerb ;
+      rdfs:comment "Computer hibernate on."^^xsd:string ;
+      rdfs:label "Computer hibernate on"^^xsd:string .
+
+event:ComputerPoweredOff
+      rdf:type event:ComputerStateChangeVerb ;
+      rdfs:comment "Computer powered off."^^xsd:string ;
+      rdfs:label "Computer powered off"^^xsd:string .
+
+event:ComputerPoweredOn
+      rdf:type event:ComputerStateChangeVerb ;
+      rdfs:comment "Computer powered on."^^xsd:string ;
+      rdfs:label "Computer powered on"^^xsd:string .
+
+event:ComputerStateChangeVerb
+      rdf:type rdf:Class ;
+      rdfs:comment "."^^xsd:string ;
+      rdfs:label ""^^xsd:string ;
+      rdfs:subClassOf event:Verb .
+
+event:Event
+      rdf:type rdf:Class ;
+      rdfs:comment "Events must have at least one actor and one theme. They, by rights, should have a location, but for these purposes this is not necessary."^^xsd:string ;
+      rdfs:label ""^^xsd:string .
+
+event:TimingAnomaly
+      rdf:type event:AnomalyEvent ;
+      rdfs:comment "timing anomaly. file MACs during time ."^^xsd:string ;
+      rdfs:label "user log in"^^xsd:string .
+
+event:UserLogIn
+      rdf:type event:UserLoginEventVerb ;
+      rdfs:comment "User logs in."^^xsd:string ;
+      rdfs:label "user log in"^^xsd:string .
+
+event:UserLogOut
+      rdf:type event:UserLoginEventVerb ;
+      rdfs:comment "User logs out"^^xsd:string ;
+      rdfs:label "user log out"^^xsd:string .
+
+event:UserLoginEventVerb
+      rdf:type rdf:Class ;
+      rdfs:comment "."^^xsd:string ;
+      rdfs:label ""^^xsd:string ;
+      rdfs:subClassOf event:Verb .
+
+event:Verb
+      rdf:type rdf:Class ;
+      rdfs:comment "."^^xsd:string ;
+      rdfs:label ""^^xsd:string .
+
+event:actor
+      rdf:type rdf:Property ;
+      rdfs:comment "actor or actors in an event"^^xsd:string ;
+      rdfs:domain event:Event ;
+      rdfs:label "actor"^^xsd:string .
+
+event:instrument
+      rdf:type rdf:Property ;
+      rdfs:comment "instrument of an event"^^xsd:string ;
+      rdfs:domain event:Event ;
+      rdfs:label "instrument"^^xsd:string .
+
+event:theme
+      rdf:type rdf:Property ;
+      rdfs:comment "theme of an event"^^xsd:string ;
+      rdfs:domain event:Event ;
+      rdfs:label "theme"^^xsd:string .
+
+event:timeEnd
+      rdf:type rdf:Property ;
+      rdfs:comment "time event ended"^^xsd:string ;
+      rdfs:domain event:Event ;
+      rdfs:label "time ended"^^xsd:string ;
+      rdfs:range xsd:dateTime .
+
+event:timeStart
+      rdf:type rdf:Property ;
+      rdfs:comment "time event started"^^xsd:string ;
+      rdfs:domain event:Event ;
+      rdfs:label "time started"^^xsd:string ;
+      rdfs:range xsd:dateTime .
+
+event:verb
+      rdf:type rdf:Property ;
+      rdfs:comment "verb of an event"^^xsd:string ;
+      rdfs:domain event:Event ;
+      rdfs:label "verb"^^xsd:string .
+
+fs:Computer
+      rdf:type rdfs:Class ;
+      rdfs:label "Computing system" .
+
+fs:Directory
+      rdf:type rdfs:Class ;
+      rdfs:comment "used to imply the ownership of objects or things by companies or individuals"^^xsd:string ;
+      rdfs:label "Directory"^^xsd:string ;
+      rdfs:subClassOf rdfs:Class .
+
+fs:Disk
+      rdf:type rdfs:Class ;
+      rdfs:comment "a disk object that contains partitions"^^xsd:string ;
+      rdfs:label "Disk"^^xsd:string ;
+      rdfs:subClassOf rdfs:Class .
+
+fs:File
+      rdf:type rdfs:Class ;
+      rdfs:comment "used to imply the ownership of objects or things by companies or individuals"^^xsd:string ;
+      rdfs:label "owns"^^xsd:string ;
+      rdfs:subClassOf rdfs:Class .
+
+fs:Partition
+      rdf:type rdfs:Class ;
+      rdfs:comment "a disk object that contains partitions"^^xsd:string ;
+      rdfs:label "Partition"^^xsd:string ;
+      rdfs:subClassOf rdfs:Class .
+
+fs:PermissionObject
+      rdf:type rdf:Class ;
+      rdfs:comment ""^^xsd:string ;
+      rdfs:label ""^^xsd:string .
+
+fs:atime
+      rdf:type rdf:Property ;
+      rdfs:comment "last access time"^^xsd:string ;
+      rdfs:label "access time"^^xsd:string .
+
+fs:contains
+      rdf:type rdf:Property , owl:TransitiveProperty ;
+      rdfs:comment "used to imply that s contains o. Used for files, directories, partitions, disks."^^xsd:string ;
+      rdfs:label "contains"^^xsd:string .
+
+fs:ctime
+      rdf:type rdf:Property ;
+      rdfs:comment "creation time"^^xsd:string ;
+      rdfs:label "ctime"^^xsd:string .
+
+fs:executionPermissions
+      rdf:type rdf:Property ;
+      rdfs:comment "has execution permissions. Connects to a fs:PermissionObject"^^xsd:string ;
+      rdfs:label "has execution permissions"^^xsd:string ;
+      rdfs:range fs:PermissionObject ;
+      rdfs:subPropertyOf fs:permissions .
+
+fs:fileExtension
+      rdf:type rdf:Property ;
+      rdfs:comment "file extension in full (ie. even multiples)"^^xsd:string ;
+      rdfs:domain fs:File ;
+      rdfs:label "file extension"^^xsd:string ;
+      rdfs:range xsd:string .
+
+fs:groupPermission
+      rdf:type rdf:Property ;
+      rdfs:comment "group has permission"^^xsd:string ;
+      rdfs:domain fs:PermissionObject ;
+      rdfs:label "group has permission"^^xsd:string ;
+      rdfs:range xsd:boolean .
+
+fs:inode
+      rdf:type rdf:Property ;
+      rdfs:comment "inode number"^^xsd:string ;
+      rdfs:label "inode"^^xsd:string .
+
+fs:mtime
+      rdf:type rdf:Property ;
+      rdfs:comment "last mod time"^^xsd:string ;
+      rdfs:label "mtime"^^xsd:string .
+
+fs:name
+      rdf:type rdf:Property ;
+      rdfs:comment "name of object"^^xsd:string ;
+      rdfs:label "path"^^xsd:string ;
+      rdfs:range xsd:string .
+
+fs:onFileSystem
+      rdf:type rdf:Property ;
+      rdfs:comment "directory is on file system"^^xsd:string ;
+      rdfs:domain fs:Directory ;
+      rdfs:label "on file system"^^xsd:string ;
+      rdfs:range xsd:string .
+
+fs:otherPermission
+      rdf:type rdf:Property ;
+      rdfs:comment "other users have permission"^^xsd:string ;
+      rdfs:domain fs:PermissionObject ;
+      rdfs:label "other users have permission"^^xsd:string ;
+      rdfs:range xsd:boolean .
+
+fs:ownerAccount
+      rdf:type rdf:Property ;
+      rdfs:comment "object owner account"^^xsd:string ;
+      rdfs:label "owner account"^^xsd:string ;
+      rdfs:subPropertyOf fs:permissions .
+
+fs:ownerGroup
+      rdf:type rdf:Property ;
+      rdfs:comment "object owner account"^^xsd:string ;
+      rdfs:label "owner account"^^xsd:string ;
+      rdfs:subPropertyOf fs:permissions .
+
+fs:ownerPermission
+      rdf:type rdf:Property ;
+      rdfs:comment "owner has permission"^^xsd:string ;
+      rdfs:domain fs:PermissionObject ;
+      rdfs:label "owner has permission"^^xsd:string ;
+      rdfs:range xsd:boolean .
+
+fs:path
+      rdf:type rdf:Property ;
+      rdfs:comment "path of file, directory"^^xsd:string ;
+      rdfs:domain
+              [ rdf:type owl:Class ;
+                owl:unionOf (fs:File fs:Directory)
+              ] ;
+      rdfs:label "path"^^xsd:string ;
+      rdfs:range xsd:string .
+
+fs:permissions
+      rdf:type rdf:Property ;
+      rdfs:comment "permissions. Use the subproperties."^^xsd:string ;
+      rdfs:label "has permissions"^^xsd:string ;
+      rdfs:subPropertyOf base:metadataProperty .
+
+fs:readPermissions
+      rdf:type rdf:Property ;
+      rdfs:comment "has read permissions. Connects to a fs:PermissionObject"^^xsd:string ;
+      rdfs:label "has read permissions"^^xsd:string ;
+      rdfs:range fs:PermissionObject ;
+      rdfs:subPropertyOf fs:permissions .
+
+fs:size
+      rdf:type rdf:Property ;
+      rdfs:comment "size in bytes"^^xsd:string ;
+      rdfs:label "size"^^xsd:string ;
+      rdfs:range xsd:integer .
+
+fs:writePermissions
+      rdf:type rdf:Property ;
+      rdfs:comment "has write permissions. Connects to a fs:PermissionObject"^^xsd:string ;
+      rdfs:label "has write permissions"^^xsd:string ;
+      rdfs:range fs:PermissionObject ;
+      rdfs:subPropertyOf fs:permissions .
+
+fsdetail:CompoundFileType
+      rdf:type rdfs:Class ;
+      rdfs:subClassOf fsdetail:FileType ;
+      fsdetail:associatedWithExtension
+              "zip" , "gz" , "tar" , "7z" , "rar" , "docx" , "xlsx" .
+
+fsdetail:ImageFileType
+      rdf:type rdfs:Class ;
+      rdfs:subClassOf fsdetail:MediaFileType ;
+      fsdetail:associatedWithExtension
+              "png" , "jpg" , "jpeg" , "gif" , "cr2" .
+
+fsdetail:MediaFileType
+      rdf:type rdfs:Class ;
+      rdfs:subClassOf fsdetail:FileType .
+
+fsdetail:MovieFileType
+      rdf:type rdfs:Class ;
+      rdfs:subClassOf fsdetail:MediaFileType ;
+      fsdetail:associatedWithExtension
+              "mov" , "avi" , "mkv" , "mp4" .
+
+fsdetail:OfficeFileType
+      rdf:type rdfs:Class ;
+      rdfs:subClassOf fsdetail:FileType ;
+      fsdetail:associatedWithExtension
+              "doc" , "xls" , "xlsx" , "docx" , "txt" .
+
+fsdetail:SystemFileType
+      rdf:type rdfs:Class ;
+      rdfs:subClassOf fsdetail:FileType .
+
+fsdetail:associatedWithExtension
+      rdf:type rdf:Property ;
+      rdfs:comment "file types are associated with extensions. "^^xsd:string ;
+      rdfs:domain fsdetail:FileType ;
+      rdfs:label "associated with extension"^^xsd:string ;
+      rdfs:range xsd:string .
+
+fsdetail:exifMetadata
+      rdf:type rdf:Property ;
+      rdfs:comment "exif metadata. "^^xsd:string ;
+      rdfs:domain fs:File ;
+      rdfs:label "exif metadata"^^xsd:string .
+
+fsdetail:fileSpecificMetadata
+      rdf:type rdf:Property ;
+      rdfs:comment "file specific metadata. "^^xsd:string ;
+      rdfs:label "file specific metadata"^^xsd:string .
+
+fsdetail:isInvisible
+      rdf:type rdf:Property ;
+      rdfs:comment "assumed false for all cases where not exlicitly true (although this is an arbitrary decision for reasoners to follow. I just dont want to add the overhead of requring false for the vast majority of files."^^xsd:string ;
+      rdfs:label "is visible"^^xsd:string ;
+      rdfs:range xsd:boolean .
+
+fsdetail:shotLatitudeMetadata
+      rdf:type rdf:Property ;
+      rdfs:comment "shoting latitude according to internal camera gps. "^^xsd:string ;
+      rdfs:domain fs:File ;
+      rdfs:label "shoot lat"^^xsd:string ;
+      rdfs:range xsd:string .
+
+fsdetail:shotLongitudeMetadata
+      rdf:type rdf:Property ;
+      rdfs:comment "shoting longitude according to internal camera gps. "^^xsd:string ;
+      rdfs:domain fs:File ;
+      rdfs:label "shoot long"^^xsd:string ;
+      rdfs:range xsd:string .
+
+fsdetail:shotTimeMetadata
+      rdf:type rdf:Property ;
+      rdfs:comment "shoting time according to internal camera clock. "^^xsd:string ;
+      rdfs:domain fs:File ;
+      rdfs:label "shoot time"^^xsd:string ;
+      rdfs:range xsd:dateTime .
+
+metadata:Assertion
+      rdf:type rdf:Class ;
+      rdfs:comment "assertion"^^xsd:string ;
+      rdfs:label "assertion"^^xsd:string .
+
+metadata:Reasoner
+      rdf:type rdf:Class ;
+      rdfs:comment "Reasoner class. Make objects"^^xsd:string ;
+      rdfs:label "reasoner"^^xsd:string .
+
+metadata:inputDate
+      rdf:type rdf:Property ;
+      rdfs:comment "input date"^^xsd:string ;
+      rdfs:label "input date"^^xsd:string ;
+      rdfs:range xsd:dateTime .
+
+metadata:source
+      rdf:type rdf:Property ;
+      rdfs:comment "source"^^xsd:string ;
+      rdfs:label "source"^^xsd:string .
+
+person:Person
+      rdf:type rdf:Class ;
+      rdfs:comment ""^^xsd:string ;
+      rdfs:label ""^^xsd:string ;
+      rdfs:subClassOf event:Event .
+
+person:accountLinkedToPerson
+      rdf:type rdf:Property ;
+      rdfs:comment "links to a computer. use subproperties if possible"^^xsd:string ;
+      rdfs:domain person:Person ;
+      rdfs:label "person linked to computer"^^xsd:string ;
+      rdfs:range user:UserAccount ;
+      owl:inverseOf person:personLinkedToAccount .
+
+person:familyName
+      rdf:type rdf:Property ;
+      rdfs:comment "family name of a person"^^xsd:string ;
+      rdfs:domain person:Person ;
+      rdfs:label "family name"^^xsd:string ;
+      rdfs:range xsd:string .
+
+person:givenName
+      rdf:type rdf:Property ;
+      rdfs:comment "given name of a person"^^xsd:string ;
+      rdfs:domain person:Person ;
+      rdfs:label "given name"^^xsd:string ;
+      rdfs:range xsd:string .
+
+person:middle1Name
+      rdf:type rdf:Property ;
+      rdfs:comment "middle name of a person"^^xsd:string ;
+      rdfs:domain person:Person ;
+      rdfs:label "1st middle name"^^xsd:string ;
+      rdfs:range xsd:string .
+
+person:middle2Name
+      rdf:type rdf:Property ;
+      rdfs:comment "middle name of a person"^^xsd:string ;
+      rdfs:domain person:Person ;
+      rdfs:label "2nd middle name"^^xsd:string ;
+      rdfs:range xsd:string .
+
+person:middle3Name
+      rdf:type rdf:Property ;
+      rdfs:comment "middle name of a person"^^xsd:string ;
+      rdfs:domain person:Person ;
+      rdfs:label "3rd middle name"^^xsd:string ;
+      rdfs:range xsd:string .
+
+person:middle4Name
+      rdf:type rdf:Property ;
+      rdfs:comment "middle name of a person"^^xsd:string ;
+      rdfs:domain person:Person ;
+      rdfs:label "4th middle name"^^xsd:string ;
+      rdfs:range xsd:string .
+
+person:personAccessesComputer
+      rdf:type rdf:Property ;
+      rdfs:comment "person accesses computer"^^xsd:string ;
+      rdfs:domain person:Person ;
+      rdfs:label "person accesses computer"^^xsd:string ;
+      rdfs:range comp:Computer ;
+      rdfs:subPropertyOf person:personLinkedToComputer .
+
+person:personLinkedToAccount
+      rdf:type rdf:Property ;
+      rdfs:comment "person linked to account. For some accounts, this will be a 1 to 1 mapping. Others (root accounts) this will not be true."^^xsd:string ;
+      rdfs:domain person:Person ;
+      rdfs:label "person linked to computer"^^xsd:string ;
+      rdfs:range user:UserAccount .
+
+person:personLinkedToComputer
+      rdf:type rdf:Property ;
+      rdfs:comment "links to a computer. use subproperties if possible"^^xsd:string ;
+      rdfs:domain person:Person ;
+      rdfs:label "person linked to computer"^^xsd:string ;
+      rdfs:range comp:Computer .
+
+person:personOwnsComputer
+      rdf:type rdf:Property ;
+      rdfs:comment "person owns computer"^^xsd:string ;
+      rdfs:domain person:Person ;
+      rdfs:label "person owns computer"^^xsd:string ;
+      rdfs:range comp:Computer ;
+      rdfs:subPropertyOf person:personLinkedToComputer .
+
+user:UserAccount
+      rdf:type rdfs:Class ;
+      rdfs:comment "a user account"^^xsd:string ;
+      rdfs:label "User account"^^xsd:string ;
+      rdfs:subClassOf rdfs:Class .
+
+user:UserGroup
+      rdf:type rdfs:Class ;
+      rdfs:comment "a user group"^^xsd:string ;
+      rdfs:label "User group"^^xsd:string ;
+      rdfs:subClassOf rdfs:Class .
+
+user:groupContainsUser
+      rdf:type rdf:Property ;
+      rdfs:comment "the connection between user and group."^^xsd:string ;
+      rdfs:domain user:UserAccount ;
+      rdfs:label "contains user"^^xsd:string ;
+      rdfs:range user:UserGroup ;
+      owl:inverseOf user:groupContainsUser .
+
+user:groupId
+      rdf:type rdf:Property ;
+      rdfs:comment "User id. Normally a number."^^xsd:string ;
+      rdfs:domain user:UserAccount ;
+      rdfs:label "metadata property"^^xsd:string ;
+      rdfs:range xsd:string .
+
+user:groupName
+      rdf:type rdf:Property ;
+      rdfs:comment "User group name."^^xsd:string ;
+      rdfs:domain user:UserGroup ;
+      rdfs:label "group name"^^xsd:string ;
+      rdfs:range xsd:string .
+
+user:userContainedWithinGroup
+      rdf:type rdf:Property ;
+      rdfs:comment "the connection between user and group."^^xsd:string ;
+      rdfs:domain user:UserGroup ;
+      rdfs:label "contains user"^^xsd:string ;
+      rdfs:range user:UserAccount ;
+      owl:inverseOf user:groupContainsUser .
+
+rdfs:Class
+      owl:cardinality "0"^^xsd:nonNegativeInteger .
