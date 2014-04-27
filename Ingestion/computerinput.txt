@@ -1,0 +1,6 @@
+Case 1		
+Computer1
+	Disk1
+		Partition1	/mount/forensic/case1/
+	Comp1Disk1partition1
+		Partition2	/mount/forensic/case1/
