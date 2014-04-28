@@ -1,0 +1,34 @@
+#
+#
+# Name: SPARQLER Rule File Type Associator. 
+#
+# Description: This rule looks at the file extension of a file and will
+# add additional rdf:type to it based on known extensions of that type. 
+# i.e. if a file has extention .doc, this rule will associate the file
+# with office documents. 
+#
+@prefix base:    <http://pax.dsto.defence.gov.au/ParFor/2012-12-10/base#> .
+@prefix comms:   <http://pax.dsto.defence.gov.au/ParFor/2012-12-10/comms#> .
+@prefix comp:    <http://pax.dsto.defence.gov.au/ParFor/2012-12-10/comp#> .
+@prefix event:   <http://pax.dsto.defence.gov.au/ParFor/2012-12-10/event#> .
+@prefix fs:      <http://pax.dsto.defence.gov.au/ParFor/2012-12-10/fs#> .
+@prefix fsdetail:  <http://pax.dsto.defence.gov.au/ParFor/2012-12-10/fsdetail#> .
+@prefix instance:  <http://pax.dsto.defence.gov.au/ParFor/2012-12-10/instance#> .
+@prefix metadata:  <http://pax.dsto.defence.gov.au/ParFor/2012-12-10/metadata#> .
+@prefix owl:     <http://www.w3.org/2002/07/owl#> .
+@prefix person:  <http://pax.dsto.defence.gov.au/ParFor/2012-12-10/person#> .
+@prefix rdf:     <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix user:    <http://pax.dsto.defence.gov.au/ParFor/2012-12-10/user#> .
+@prefix xsd:     <http://www.w3.org/2001/XMLSchema#> .
+
+construct 
+{ 
+	?file rdf:type ?basetype .
+}
+where
+{
+	?file rdf:type base:File .
+    ?file fs:fileExtension ?fileExt.
+    ?basetype fsdetail:associatedWithExtension ?fileExt.
+}
