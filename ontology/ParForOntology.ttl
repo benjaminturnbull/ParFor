@@ -379,13 +379,13 @@ fs:Disk
 
 fs:File
       rdf:type rdfs:Class ;
-      rdfs:comment "used to imply the ownership of objects or things by companies or individuals"^^xsd:string ;
-      rdfs:label "owns"^^xsd:string ;
+      rdfs:comment "File object"^^xsd:string ;
+      rdfs:label "File"^^xsd:string ;
       rdfs:subClassOf rdfs:Class .
 
 fs:Partition
       rdf:type rdfs:Class ;
-      rdfs:comment "a disk object that contains partitions"^^xsd:string ;
+      rdfs:comment "a partition object that contains files and folders"^^xsd:string ;
       rdfs:label "Partition"^^xsd:string ;
       rdfs:subClassOf rdfs:Class .
 
@@ -514,6 +514,10 @@ fs:writePermissions
       rdfs:label "has write permissions"^^xsd:string ;
       rdfs:range fs:PermissionObject ;
       rdfs:subPropertyOf fs:permissions .
+
+fsdetail:FileType
+      rdf:type rdfs:Class ;
+      rdfs:comment "umbrella term. Use sub types. Determines file types "^^xsd:string .
 
 fsdetail:CompoundFileType
       rdf:type rdfs:Class ;
